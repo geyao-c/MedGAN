@@ -220,7 +220,6 @@ if __name__ == '__main__':
         optimizerG = optim.RMSprop(netG.parameters(), lr=opt.lrG)
 
     gen_iterations = 0
-    data_iter = iter(dataloader)
     # discriminator, generate训练轮数
     total_D, total_G, total_DG = 0, 0, 0
     errD_real, errD_fake, errD, errG = None, None, None, None
@@ -230,6 +229,7 @@ if __name__ == '__main__':
 
     T1, T2 = 0.25, 0.5
     for epoch in range(opt.niter):
+        data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):
             # Diter: discriminator训练轮次
