@@ -279,14 +279,14 @@ if __name__ == '__main__':
             total_DG = total_D + total_G
 
             # 写日志
-            rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
+            rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
             print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
             gen_iterations += 1
 
             # 生成图片
-            if total_DG % 5000 == 0:
+            if total_DG % 1000 == 0:
                 real_cpu = data[0].mul(0.5).add(0.5)
                 real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(total_DG))
                 vutils.save_image(real_cpu, real_image_path)
