@@ -264,6 +264,8 @@ if __name__ == '__main__':
                 # 不满足条件则训练discriminator
                 if not(c_errD_real < c_errD_fake - T2 and c_errG > T1):
                     errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
+                    errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(),2), \
+                                                 round(errD.cpu().item(), 2)
                 # 否则跳出去训练generator
 
             for p in netD.parameters():
@@ -271,15 +273,12 @@ if __name__ == '__main__':
 
             # 更新generator
             errG = generator_train(netG, noise, optimizerG, opt)
-
+            errG = round(errG.cpu().item(), 2)
             # ------------------------------------------------------------------------
             total_G += 1
             total_DG = total_D + total_G
 
             # 写日志
-            print(type(errD_real), type(errD_fake), type(errD), type(errG))
-            errD_real, errD_fake, errD, errG = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
-                                               round(errD.cpu().item(), 2), round(errG.cpu().item(), 2)
             rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
             print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
