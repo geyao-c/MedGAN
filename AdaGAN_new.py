@@ -277,6 +277,7 @@ if __name__ == '__main__':
             total_DG = total_D + total_G
 
             # 写日志
+            print(type(errD_real), type(errD_fake), type(errD), type(errG))
             errD_real, errD_fake, errD, errG = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
                                                round(errD.cpu().item(), 2), round(errG.cpu().item(), 2)
             rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
