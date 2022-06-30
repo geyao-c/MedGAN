@@ -254,7 +254,7 @@ if __name__ == '__main__':
                 while j < Diters and i < len(dataloader):
                     j += 1; total_D += 1; total_DG = total_D + total_G
 
-                    data = data_iter.next().to(device)
+                    data = data_iter.next()[0].to(device)
                     i += 1
 
                     # 训练discriminator
