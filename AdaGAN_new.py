@@ -96,7 +96,7 @@ def discriminator_train(netD, data, noise, optimizerD, opt):
     netD.zero_grad()
 
     # train with real
-    real = data[0].to(device)
+    real = data
     errD_real = netD(real)
     errD_real.backward(one)
 
@@ -116,7 +116,7 @@ def discriminator_train(netD, data, noise, optimizerD, opt):
 def discriminator_infer(netD, data, noise, opt):
     with torch.no_grad():
         # inference real data
-        real = data[0]
+        real = data
         c_errD_real = netD(real)
 
         # inference with fake
@@ -240,7 +240,7 @@ if __name__ == '__main__':
                 t_type = 'train_ada'
                 # 获得adagan的训练条件
                 # 挑出一个batch得到参数
-                data = data_iter.next().to(device)
+                data = data_iter.next()[0].to(device)
                 i += 1
 
                 c_errD_real, c_errD_fake, c_errD = discriminator_infer(netD, data, noise, opt)
