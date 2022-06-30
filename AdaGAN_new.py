@@ -49,7 +49,7 @@ def argsget():
     parser.add_argument('--mlp_G', action='store_true', help='use MLP for G')
     parser.add_argument('--mlp_D', action='store_true', help='use MLP for D')
     parser.add_argument('--n_extra_layers', type=int, default=0, help='Number of extra layers on gen and disc')
-    parser.add_argument('--experiment', default='./result/WGAN/', help='Where to store samples and models')
+    parser.add_argument('--experiment', default='./result/AdaGAN/', help='Where to store samples and models')
     parser.add_argument('--adam', action='store_true', help='Whether to use adam (default is rmsprop)')
 
     parser.add_argument('--version', type=int, default=0)
