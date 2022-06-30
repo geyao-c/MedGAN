@@ -287,7 +287,7 @@ if __name__ == '__main__':
 
             # 生成图片
             if total_DG % 1000 == 0:
-                real_cpu = data[0].mul(0.5).add(0.5)
+                real_cpu = data.mul(0.5).add(0.5)
                 real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(total_DG))
                 vutils.save_image(real_cpu, real_image_path)
 
