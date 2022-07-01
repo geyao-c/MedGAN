@@ -244,13 +244,13 @@ if __name__ == '__main__':
             gen_iterations += 1
 
             # 生成图片
-            if total_DG % 500 == 0:
+            if gen_iterations % 100 == 0:
                 print('save image')
                 real_cpu = data.mul(0.5).add(0.5)
-                real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(total_DG))
+                real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(gen_iterations))
                 vutils.save_image(real_cpu, real_image_path)
 
                 fake = netG(fixed_noise)
                 fake.data = fake.data.mul(0.5).add(0.5)
-                fake_image_path = os.path.join(image_generate_dir, '{}_fake_samples.png'.format(total_DG))
+                fake_image_path = os.path.join(image_generate_dir, '{}_fake_samples.png'.format(gen_iterations))
                 vutils.save_image(fake.data, fake_image_path)
