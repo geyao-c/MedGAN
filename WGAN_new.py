@@ -96,7 +96,7 @@ def discriminator_train(netD, data, noise, optimizerD, opt):
     netD.zero_grad()
 
     # train with real
-    real = data[0].to(device)
+    real = data.to(device)
     errD_real = netD(real)
     errD_real.backward(one)
 
@@ -203,12 +203,12 @@ if __name__ == '__main__':
         optimizerG = optim.RMSprop(netG.parameters(), lr=opt.lrG)
 
     gen_iterations = 0
-    data_iter = iter(dataloader)
     # discriminator, generate训练轮数
     total_D, total_G, total_DG = 0, 0, 0
     errD_real, errD_fake, errD, errG = None, None, None, None
 
     for epoch in range(opt.niter):
+        data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):
             # Diter: discriminator训练轮次
@@ -219,7 +219,7 @@ if __name__ == '__main__':
             while j < Diters and i < len(dataloader):
                 j += 1; total_D += 1; total_DG = total_D + total_G
 
-                data = data_iter.next()
+                data = data_iter.next()[0].to(device)
                 i += 1
 
                 # 训练discriminator
