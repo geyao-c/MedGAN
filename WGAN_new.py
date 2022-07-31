@@ -244,7 +244,7 @@ if __name__ == '__main__':
             gen_iterations += 1
 
             # 生成图片
-            if gen_iterations % 10 == 0:
+            if gen_iterations % 100 == 0:
                 print('save image')
                 real_cpu = data.mul(0.5).add(0.5)
                 real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(gen_iterations))

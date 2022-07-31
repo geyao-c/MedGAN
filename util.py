@@ -1,7 +1,7 @@
 import torchvision.transforms as transforms
 import torchvision.datasets as dset
 import torch
-from mydataloader import myDataset
+from gendataloader import myDataset
 
 
 def dstget(opt):
@@ -32,7 +32,7 @@ def dstget(opt):
                                )
     # 医学图片使用自定义dataloader加载
     else:
-        dataset = myDataset(int(opt.class_id))
+        dataset = myDataset(opt)
         # Dataloader_train = data.DataLoader(dataset, args.batch_size,
         #                             num_workers = args.num_workers,
         #                             shuffle = True, pin_memory = True)

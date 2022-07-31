@@ -56,9 +56,12 @@ class DCGAN_G(nn.Module):
     def __init__(self, isize, nz, nc, ngf, ngpu, n_extra_layers=0):
         super(DCGAN_G, self).__init__()
         self.ngpu = ngpu
+        # isize is image-size
         assert isize % 16 == 0, "isize has to be a multiple of 16"
 
         cngf, tisize = ngf//2, 4
+        # tisize = 4 * 2 * 2 * 2 * 2 = 32
+        # cngf = 32 * 2 * 2 * 2 * 2 = 512
         while tisize != isize:
             cngf = cngf * 2
             tisize = tisize * 2
@@ -80,7 +83,9 @@ class DCGAN_G(nn.Module):
                             nn.BatchNorm2d(cngf//2))
             main.add_module('pyramid:{0}:relu'.format(cngf//2),
                             nn.ReLU(True))
+            # 通道数减半
             cngf = cngf // 2
+            # 尺寸加倍
             csize = csize * 2
 
         # Extra layers
@@ -103,7 +108,8 @@ class DCGAN_G(nn.Module):
             output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
         else: 
             output = self.main(input)
-        return output 
+        return output
+
 ###############################################################################
 class DCGAN_D_nobn(nn.Module):
     def __init__(self, isize, nz, nc, ndf, ngpu, n_extra_layers=0):
