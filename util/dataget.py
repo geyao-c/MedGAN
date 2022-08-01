@@ -1,7 +1,7 @@
 import torchvision.transforms as transforms
 import torchvision.datasets as dset
 import torch
-from gendataloader import myDataset
+from util.gendataloader import myDataset
 
 
 def dstget(opt):
@@ -25,7 +25,7 @@ def dstget(opt):
     elif opt.dataset == 'cifar10':
         dataset = dset.CIFAR10(root="./data/cifar10/", download=True,
                                transform=transforms.Compose([
-                                   transforms.Scale(opt.imageSize),
+                                   transforms.Scale(opt.img_size),
                                    transforms.ToTensor(),
                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                ])
