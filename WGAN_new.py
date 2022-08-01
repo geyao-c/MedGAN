@@ -17,7 +17,7 @@ import models.mlp as mlp
 import numpy as np
 import copy as cp
 import datetime
-import util
+from util import dataget, data_split, gendataloader
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 one = torch.FloatTensor([1]).to(device)
@@ -26,10 +26,11 @@ mone = (one * - 1).to(device)
 def argsget():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', default="other", help='cifar10 | lsun | imagenet | folder | lfw ')
-    parser.add_argument('--dataroot', default="samples", help='path to dataset')
+    # parser.add_argument('--dataroot', default="samples", help='path to dataset')
+    parser.add_argument('--dataroot', default="/Users/chenjie/dataset/医疗数据集/processed_dataset/gen", help='path to dataset')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=0)
     parser.add_argument('--batchSize', type=int, default=64, help='input batch size')
-    parser.add_argument('--imageSize', type=int, default=64, help='the height / width of the input image to network')
+    parser.add_argument('--img_size', type=int, default=64, help='the height / width of the input image to network')
     parser.add_argument('--nc', type=int, default=3, help='input image channels')
     parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
     parser.add_argument('--ngf', type=int, default=64)
@@ -53,7 +54,7 @@ def argsget():
     parser.add_argument('--adam', action='store_true', help='Whether to use adam (default is rmsprop)')
 
     parser.add_argument('--version', type=int, default=0)
-    parser.add_argument('--classid', type=str, default=None)
+    parser.add_argument('--class_name', type=str, default='blister')
     opt = parser.parse_args()
     return opt
 
@@ -74,6 +75,16 @@ def mkdir(path):
 #         img2[0, 2, :, :] = img1[0, 0, :, :]
 #         # vutils.save_image(img2, os.path.join(root_path + "generate/" + str(epoch) + "/", str(i) + ".jpg"))
 #         vutils.save_image(img2, os.path.join(image_generate_dir, str(epoch), str(i) + ".jpg"))
+
+def generate_image(netG, real_data, fixed_noise_gen, iter, root):
+    real_cpu = real_data.mul(0.5).add(0.5)
+    real_image_path = os.path.join(root, '{}_real_samples.png'.format(iter))
+    vutils.save_image(real_cpu, real_image_path)
+
+    fake = netG(fixed_noise_gen)
+    fake.data = fake.data.mul(0.5).add(0.5)
+    fake_image_path = os.path.join(root, '{}_fake_samples.png'.format(iter))
+    vutils.save_image(fake.data, fake_image_path)
 
 # custom weights initialization called on netG and netD
 def weights_init(m):
@@ -129,7 +140,7 @@ if __name__ == '__main__':
     opt = argsget()
     # 当前时间
     now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
-    root = os.path.join(opt.experiment, now)
+    root = os.path.join(opt.experiment, opt.class_name, now)
     # 图片存储文件夹
     image_generate_dir = os.path.join(root, 'image_generate')
     mkdir(image_generate_dir)
@@ -147,21 +158,21 @@ if __name__ == '__main__':
     cudnn.benchmark = True
 
     # 加载数据集
-    dataloader = util.dstget(opt)
+    dataloader = dataget.dstget(opt)
 
     # write out generator config to generate images together wth training checkpoints (.pth)
-    generator_config = {"imageSize": opt.imageSize, "nz": opt.nz, "nc": opt.nc, "ngf": opt.ngf, "ngpu": opt.ngpu,
+    generator_config = {"imageSize": opt.img_size, "nz": opt.nz, "nc": opt.nc, "ngf": opt.ngf, "ngpu": opt.ngpu,
                         "n_extra_layers": opt.n_extra_layers, "noBN": opt.noBN, "mlp_G": opt.mlp_G}
     with open(os.path.join(record_dir, "generator_config.json"), 'w') as gcfg:
         gcfg.write(json.dumps(generator_config) + "\n")
 
     # 构建generator
     if opt.noBN:
-        netG = dcgan.DCGAN_G_nobn(opt.imageSize, opt.nz, opt.nc, opt.ngf, opt.ngpu, opt.n_extra_layers)
+        netG = dcgan.DCGAN_G_nobn(opt.img_size, opt.nz, opt.nc, opt.ngf, opt.ngpu, opt.n_extra_layers)
     elif opt.mlp_G:
-        netG = mlp.MLP_G(opt.imageSize, opt.nz, opt.nc, opt.ngf, opt.ngpu)
+        netG = mlp.MLP_G(opt.img_size, opt.nz, opt.nc, opt.ngf, opt.ngpu)
     else:
-        netG = dcgan.DCGAN_G(opt.imageSize, opt.nz, opt.nc, opt.ngf, opt.ngpu, opt.n_extra_layers)
+        netG = dcgan.DCGAN_G(opt.img_size, opt.nz, opt.nc, opt.ngf, opt.ngpu, opt.n_extra_layers)
 
     # generator参数初始化
     netG.apply(weights_init)
@@ -170,16 +181,16 @@ if __name__ == '__main__':
     print(netG)
 
     # write out generator config to generate images together wth training checkpoints (.pth)
-    discriminator_config = {"imageSize": opt.imageSize, "nz": opt.nz, "nc": opt.nc, "ngf": opt.ndf, "ngpu": opt.ngpu,
+    discriminator_config = {"imageSize": opt.img_size, "nz": opt.nz, "nc": opt.nc, "ngf": opt.ndf, "ngpu": opt.ngpu,
                         "n_extra_layers": opt.n_extra_layers, "noBN": opt.noBN, "mlp_G": opt.mlp_G}
     with open(os.path.join(record_dir, "discriminator_config.json"), 'w') as gcfg:
         gcfg.write(json.dumps(discriminator_config) + "\n")
 
     # 构建discriminator
     if opt.mlp_D:
-        netD = mlp.MLP_D(opt.imageSize, opt.nz, opt.nc, opt.ndf, opt.ngpu)
+        netD = mlp.MLP_D(opt.img_size, opt.nz, opt.nc, opt.ndf, opt.ngpu)
     else:
-        netD = dcgan.DCGAN_D(opt.imageSize, opt.nz, opt.nc, opt.ndf, opt.ngpu, opt.n_extra_layers)
+        netD = dcgan.DCGAN_D(opt.img_size, opt.nz, opt.nc, opt.ndf, opt.ngpu, opt.n_extra_layers)
         netD.apply(weights_init)
 
     # discriminator参数初始化化
@@ -187,7 +198,7 @@ if __name__ == '__main__':
         netD.load_state_dict(torch.load(opt.netD))
     print("netD ", netD)
 
-    input = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize).to(device)
+    input = torch.FloatTensor(opt.batchSize, 3, opt.img_size, opt.img_size).to(device)
     # tensor默认requires_grad == False
     noise = torch.FloatTensor(opt.batchSize, opt.nz, 1, 1).to(device)
     fixed_noise = torch.FloatTensor(opt.batchSize, opt.nz, 1, 1).normal_(0, 1).to(device)
@@ -216,14 +227,22 @@ if __name__ == '__main__':
             else: Diters = opt.Diters
             j = 0
             # 更新discriminator
-            while j < Diters and i < len(dataloader):
+            while j < Diters :
                 j += 1; total_D += 1; total_DG = total_D + total_G
 
-                data = data_iter.next()[0].to(device)
+                if i >= len(dataloader):
+                    i = 0
+                    data_iter = iter(dataloader)
+                data = data_iter.next().to(device)
+
                 i += 1
 
                 # 训练discriminator
                 errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
+                # 生成图片
+                if total_DG % 1000 == 0:
+                    generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+
 
             for p in netD.parameters():
                 p.requires_grad = False
@@ -244,13 +263,6 @@ if __name__ == '__main__':
             gen_iterations += 1
 
             # 生成图片
-            if gen_iterations % 100 == 0:
-                print('save image')
-                real_cpu = data.mul(0.5).add(0.5)
-                real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(gen_iterations))
-                vutils.save_image(real_cpu, real_image_path)
+            if total_DG % 1000 == 0:
+                generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
 
-                fake = netG(fixed_noise)
-                fake.data = fake.data.mul(0.5).add(0.5)
-                fake_image_path = os.path.join(image_generate_dir, '{}_fake_samples.png'.format(gen_iterations))
-                vutils.save_image(fake.data, fake_image_path)
