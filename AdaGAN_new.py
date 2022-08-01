@@ -297,22 +297,21 @@ if __name__ == '__main__':
                         generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
                 # 否则跳出去训练generator
 
-            # errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
-            #                              round(errD.cpu().item(), 2)
+            if not isinstance(errD_real, float):
+                errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
+                                             round(errD.cpu().item(), 2)
 
             for p in netD.parameters():
                 p.requires_grad = False
 
             # 更新generator
             errG = generator_train(netG, noise, optimizerG, opt)
-            # errG = round(errG.cpu().item(), 2)
+            errG = round(errG.cpu().item(), 2)
             # ------------------------------------------------------------------------
             total_G += 1
             total_DG = total_D + total_G
 
-            # 写日志
-            errD_real, errD_fake, errD, errG = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
-                                               round(errD.cpu().item(), 2), round(errG.cpu().item(), 2)
+
             # 写日志
             rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
