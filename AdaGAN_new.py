@@ -80,6 +80,17 @@ def mkdir(path):
 #         vutils.save_image(img2, os.path.join(image_generate_dir, str(epoch), str(i) + ".jpg"))
 
 # custom weights initialization called on netG and netD
+
+def generate_image(netG, real_data, fixed_noise_gen, iter, root):
+    real_cpu = real_data.mul(0.5).add(0.5)
+    real_image_path = os.path.join(root, '{}_real_samples.png'.format(iter))
+    vutils.save_image(real_cpu, real_image_path)
+
+    fake = netG(fixed_noise_gen)
+    fake.data = fake.data.mul(0.5).add(0.5)
+    fake_image_path = os.path.join(root, '{}_fake_samples.png'.format(iter))
+    vutils.save_image(fake.data, fake_image_path)
+
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -236,14 +247,20 @@ if __name__ == '__main__':
         data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):
-            # Diter: discriminator训练轮次
+            # gen iterations为generator训练的轮次
+            # 初始时候的一个gen_iteration对应100个diters
             if gen_iterations < 2:
+                # Diter: discriminator训练轮次
                 Diters = 100
                 t_type = 'train_ori'
             else:
                 t_type = 'train_ada'
                 # 获得adagan的训练条件
                 # 挑出一个batch得到参数
+                if i >= len(dataloader):
+                    i = 0
+                    data_iter = iter(dataloader)
+                # 获取数据
                 data = data_iter.next().to(device)
                 i += 1
 
@@ -255,9 +272,14 @@ if __name__ == '__main__':
             if t_type == 'train_ori':
                 j = 0
                 # 更新discriminator
-                while j < Diters and i < len(dataloader):
+                # 一定要训练满diters轮次
+                while j < Diters:
+                # while j < Diters and i < len(dataloader):
                     j += 1; total_D += 1; total_DG = total_D + total_G
 
+                    if i >= len(dataloader):
+                        i = 0
+                        data_iter = iter(dataloader)
                     data = data_iter.next().to(device)
                     i += 1
 
@@ -266,10 +288,16 @@ if __name__ == '__main__':
             # 按照adagan方式进行训练
             elif t_type == 'train_ada':
                 # 不满足条件则训练discriminator
+                # T2 < c_errD_fake - c_errD_real and T1 < c_errG
                 if not(c_errD_real < c_errD_fake - T2 and c_errG > T1):
+                    total_D += 1; total_DG = total_D + total_G
                     errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
                     errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(),2), \
                                                  round(errD.cpu().item(), 2)
+                    # 生成图片
+                    if total_DG % 1000 == 0:
+                        generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+
                 # 否则跳出去训练generator
 
             for p in netD.parameters():
@@ -290,13 +318,5 @@ if __name__ == '__main__':
             gen_iterations += 1
 
             # 生成图片
-            # if total_DG % 1000 == 0:
-            if gen_iterations % 1000 == 0:
-                real_cpu = data.mul(0.5).add(0.5)
-                real_image_path = os.path.join(image_generate_dir, '{}_real_samples.png'.format(total_DG))
-                vutils.save_image(real_cpu, real_image_path)
-
-                fake = netG(fixed_noise)
-                fake.data = fake.data.mul(0.5).add(0.5)
-                fake_image_path = os.path.join(image_generate_dir, '{}_fake_samples.png'.format(total_DG))
-                vutils.save_image(fake.data, fake_image_path)
+            if total_DG % 1000 == 0:
+                generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
