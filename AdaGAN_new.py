@@ -293,6 +293,7 @@ if __name__ == '__main__':
                     data_iter = iter(dataloader)
                 # 获取数据
                 data = data_iter.next().to(device)
+                print(data.shape)
                 i += 1
 
                 c_errD_real, c_errD_fake, c_errD = discriminator_infer(netD, data, noise, opt)
