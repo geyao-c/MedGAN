@@ -48,4 +48,4 @@ def timage_gnrt(model, real_data, noise, root, iter):
 
     # 生成一批次假图片
     bc_fk_dir = os.path.join(root, 'bc_img')
-    bc_fk_img_gnrt(model, noise, iter)
+    bc_fk_img_gnrt(model, noise, bc_fk_dir, iter)
