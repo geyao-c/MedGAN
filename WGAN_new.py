@@ -17,7 +17,7 @@ import models.mlp as mlp
 import numpy as np
 import copy as cp
 import datetime
-from util import dataget, data_split, gendataloader
+from util import dataget, data_split, gendataloader, toolsf
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 one = torch.FloatTensor([1]).to(device)
@@ -241,8 +241,7 @@ if __name__ == '__main__':
                 errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
                 # 生成图片
                 if total_DG % 1000 == 0:
-                    generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
-
+                    toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
 
             for p in netD.parameters():
                 p.requires_grad = False
@@ -264,5 +263,6 @@ if __name__ == '__main__':
 
             # 生成图片
             if total_DG % 1000 == 0:
-                generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+                toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
+
 

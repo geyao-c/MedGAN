@@ -17,7 +17,7 @@ import models.mlp as mlp
 import numpy as np
 import copy as cp
 import datetime
-from util import dataget, data_split, gendataloader
+from util import dataget, data_split, gendataloader, toolsf
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 one = torch.FloatTensor([1]).to(device)
@@ -163,8 +163,8 @@ if __name__ == '__main__':
     now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
     root = os.path.join(opt.experiment, opt.class_name, now)
     # 图片存储文件夹
-    image_generate_dir = os.path.join(root, 'image_generate')
-    mkdir(image_generate_dir)
+    # image_generate_dir = os.path.join(root, 'image_generate')
+    # mkdir(image_generate_dir)
     record_dir = os.path.join(root, 'record')
     mkdir(record_dir)
     # 日志文件
@@ -293,7 +293,6 @@ if __name__ == '__main__':
                     data_iter = iter(dataloader)
                 # 获取数据
                 data = data_iter.next().to(device)
-                print(data.shape)
                 i += 1
 
                 c_errD_real, c_errD_fake, c_errD = discriminator_infer(netD, data, noise, opt)
@@ -309,8 +308,8 @@ if __name__ == '__main__':
                                                  round(errD.cpu().item(), 2)
                     # 生成图片
                     if total_DG % 1000 == 0:
-                        print('dshape: ', data.shape)
-                        generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+                        # generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+                        toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     print('AdaGAN: discriminator train')
                 # 否则训练generator
                 else:
@@ -323,8 +322,7 @@ if __name__ == '__main__':
                     gen_iterations += 1
                     # 生成图片
                     if total_DG % 1000 == 0:
-                        print('gshape: ', data.shape)
-                        generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
+                        toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     print('AdaGAN: generator train')
                 # 写日志
                 rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
