@@ -309,6 +309,7 @@ if __name__ == '__main__':
                                                  round(errD.cpu().item(), 2)
                     # 生成图片
                     if total_DG % 1000 == 0:
+                        print('dshape: ', data.shape)
                         generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
                     print('AdaGAN: discriminator train')
                 # 否则训练generator
@@ -322,6 +323,7 @@ if __name__ == '__main__':
                     gen_iterations += 1
                     # 生成图片
                     if total_DG % 1000 == 0:
+                        print('gshape: ', data.shape)
                         generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
                     print('AdaGAN: generator train')
                 # 写日志
