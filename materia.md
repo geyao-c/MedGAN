@@ -7,7 +7,7 @@
 python AdaGAN_New.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 64 --img_size 64 --class_name blister --T1 0.25 --T2 0.5
 
 # ubuntu服务器
-python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 64 --img_size 64 --class_name blister --T1 0.25 --T2 0.5
+python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name blister --T1 0.3 --T2 0.5
 ```
 
 **训练Demodicosis**
@@ -24,11 +24,43 @@ python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/pr
 
 ```python
 # 本地
-python AdaGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name parakeratosis 
+python AdaGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name parakeratosis --T1 0.3 --T2 0.5
 
 # ubuntu服务器
-python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name parakeratosis 
+python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name parakeratosis --T1 0.3 --T2 0.5
 ```
+
+**训练hydatoncus**
+
+```python
+# 本地
+python AdaGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name hydatoncus --T1 0.3 --T2 0.5
+
+# ubuntu服务器
+python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name hydatoncus --T1 0.3 --T2 0.5
+```
+
+**训练molluscum**
+
+```python
+# 本地
+python AdaGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name molluscum --T1 0.3 --T2 0.5
+
+# ubuntu服务器
+python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name molluscum --T1 0.3 --T2 0.5
+```
+
+**训练papillomatosis**
+
+```python
+# 本地
+python AdaGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis --T1 0.3 --T2 0.5
+
+# ubuntu服务器
+python AdaGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis --T1 0.3 --T2 0.5
+```
+
+
 
 ### 一、训练WGan_new
 
@@ -60,5 +92,35 @@ python WGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数�
 
 # ubuntu服务器
 python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name parakeratosis 
+```
+
+**训练hydatoncus**
+
+```python
+# 本地
+python WGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name hydatoncus 
+
+# ubuntu服务器
+python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name hydatoncus 
+```
+
+**训练molluscum**
+
+```python
+# 本地
+python WGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name molluscum 
+
+# ubuntu服务器
+python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name molluscum 
+```
+
+**训练papillomatosis**
+
+```python
+# 本地
+python WGAN_new.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis 
+
+# ubuntu服务器
+python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis 
 ```
 

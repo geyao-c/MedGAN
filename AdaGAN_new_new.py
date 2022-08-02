@@ -56,7 +56,7 @@ def argsget():
 
     parser.add_argument('--version', type=int, default=0)
     parser.add_argument('--class_name', type=str, default='blister')
-    parser.add_argument('--T1', type=float, default=0.3)
+    parser.add_argument('--T1', type=float, default=0.25)
     parser.add_argument('--T2', type=float, default=0.5)
     opt = parser.parse_args()
     return opt
@@ -248,44 +248,13 @@ if __name__ == '__main__':
         i = 0
         while i < len(dataloader):
             # gen iterations为generator训练的轮次
-            # gen_iterations < 2时按照WGAN的训练方式进行训练
+            # 初始时候的一个gen_iteration对应100个diters
             if gen_iterations < 2:
                 # Diter: discriminator训练轮次
                 Diters = 100
-                j = 0
-                # 更新discriminator
-                # 一定要训练满diters轮次
-                while j < Diters:
-                    # while j < Diters and i < len(dataloader):
-                    j += 1; total_D += 1; total_DG = total_D + total_G
-                    if i >= len(dataloader):
-                        i = 0
-                        data_iter = iter(dataloader)
-                    data = data_iter.next().to(device)
-                    i += 1
-                    # 训练discriminator
-                    errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
-                    errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
-                                                 round(errD.cpu().item(), 2)
-                    print('WGAN: discriminator train')
-
-                # 更新generator
-                total_G += 1; total_DG = total_D + total_G
-                for p in netD.parameters():
-                    p.requires_grad = False
-                # 训练generator
-                errG = generator_train(netG, noise, optimizerG, opt)
-                errG = round(errG.cpu().item(), 2)
-                gen_iterations += 1
-                print('WGAN: generator train')
-                # ------------------------------------------------------------------------
-                # 写日志
-                rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
-                         format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
-                print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
-                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
-            # 否则按照AdaGAN的方式进行训练
+                t_type = 'train_ori'
             else:
+                t_type = 'train_ada'
                 # 获得adagan的训练条件
                 # 挑出一个batch得到参数
                 if i >= len(dataloader):
@@ -299,32 +268,61 @@ if __name__ == '__main__':
                 c_errD_real, c_errD_fake, c_errD = c_errD_real.item(), c_errD_fake.item(), c_errD.item()
                 c_errG = c_errD_fake
 
+            # 按照wgan方法进行训练
+            if t_type == 'train_ori':
+                j = 0
+                # 更新discriminator
+                # 一定要训练满diters轮次
+                while j < Diters:
+                # while j < Diters and i < len(dataloader):
+                    j += 1; total_D += 1; total_DG = total_D + total_G
+
+                    if i >= len(dataloader):
+                        i = 0
+                        data_iter = iter(dataloader)
+                    data = data_iter.next().to(device)
+                    i += 1
+
+                    # 训练discriminator
+                    errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
+            # 按照adagan方式进行训练
+            elif t_type == 'train_ada':
                 # 不满足条件则训练discriminator
                 # T2 < c_errD_fake - c_errD_real and T1 < c_errG
-                if not (c_errD_real < c_errD_fake - T2 and c_errG > T1):
+                if not(c_errD_real < c_errD_fake - T2 and c_errG > T1):
                     total_D += 1; total_DG = total_D + total_G
                     errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
-                    errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
-                                                 round(errD.cpu().item(), 2)
                     # 生成图片
                     if total_DG % 1000 == 0:
                         generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
-                    print('AdaGAN: discriminator train')
-                # 否则训练generator
-                else:
-                    total_G += 1; total_DG = total_D + total_G
-                    for p in netD.parameters():
-                        p.requires_grad = False
-                    # 训练generator
-                    errG = generator_train(netG, noise, optimizerG, opt)
-                    errG = round(errG.cpu().item(), 2)
-                    gen_iterations += 1
-                    # 生成图片
-                    if total_DG % 1000 == 0:
-                        generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
-                    print('AdaGAN: generator train')
-                # 写日志
-                rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
-                         format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
-                print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
-                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+                # 否则跳出去训练generator
+
+            if not isinstance(errD_real, float):
+                errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
+                                             round(errD.cpu().item(), 2)
+
+            for p in netD.parameters():
+                p.requires_grad = False
+
+            # 更新generator
+            errG = generator_train(netG, noise, optimizerG, opt)
+            errG = round(errG.cpu().item(), 2)
+            # ------------------------------------------------------------------------
+            total_G += 1
+            total_DG = total_D + total_G
+
+            # 写日志
+            rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
+                     format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
+                  format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            # 写日志
+            rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
+                     format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
+                     format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            gen_iterations += 1
+
+            # 生成图片
+            if total_DG % 1000 == 0:
+                generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
