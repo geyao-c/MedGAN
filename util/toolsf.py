@@ -39,7 +39,7 @@ def bc_fk_img_gnrt(model, noise, dir, iter):
 
 def timage_gnrt(model, real_data, noise, root, iter):
     # 在单个文件夹下生成多张图片
-    sg_fk_dir = os.path.join(root, 'sg_fk_img', iter)
+    sg_fk_dir = os.path.join(root, 'sg_fk_img', str(iter))
     sg_fk_img_gnrt(model, noise, sg_fk_dir)
 
     # 生成一批次真图片
