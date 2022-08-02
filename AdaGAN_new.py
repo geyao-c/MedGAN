@@ -308,8 +308,10 @@ if __name__ == '__main__':
                                                  round(errD.cpu().item(), 2)
                     # 生成图片
                     if total_DG % 1000 == 0:
-                        # generate_image(netG, data, fixed_noise, total_DG, image_generate_dir)
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
+                    # 保存模型
+                    if total_DG % 5000 == 0:
+                        toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: discriminator train')
                 # 否则训练generator
                 else:
@@ -323,6 +325,9 @@ if __name__ == '__main__':
                     # 生成图片
                     if total_DG % 1000 == 0:
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
+                    # 保存模型
+                    if total_DG % 5000 == 0:
+                        toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: generator train')
                 # 写日志
                 rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".

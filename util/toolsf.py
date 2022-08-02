@@ -49,3 +49,9 @@ def timage_gnrt(model, real_data, noise, root, iter):
     # 生成一批次假图片
     bc_fk_dir = os.path.join(root, 'bc_img')
     bc_fk_img_gnrt(model, noise, bc_fk_dir, iter)
+
+def model_save(netG, netD, iter, dir):
+    G_save_path = os.path.join(dir, 'saved_model', 'netG_iter{}'.format(iter))
+    D_save_path = os.path.join(dir, 'saved_model', 'netD_iter{}'.format(iter))
+    torch.save(netG.state_dict(), G_save_path)
+    torch.save(netD.state_dict(), D_save_path)

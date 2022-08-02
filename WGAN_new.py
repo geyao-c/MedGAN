@@ -242,6 +242,9 @@ if __name__ == '__main__':
                 # 生成图片
                 if total_DG % 1000 == 0:
                     toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
+                # 保存模型
+                if total_DG % 5000 == 0:
+                    toolsf.model_save(netG, netD, total_DG, root)
 
             for p in netD.parameters():
                 p.requires_grad = False
@@ -264,5 +267,7 @@ if __name__ == '__main__':
             # 生成图片
             if total_DG % 1000 == 0:
                 toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
-
+            # 保存模型
+            if total_DG % 5000 == 0:
+                toolsf.model_save(netG, netD, total_DG, root)
 
