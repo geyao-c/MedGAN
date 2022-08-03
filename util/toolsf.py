@@ -2,7 +2,7 @@ import torch
 import os
 import torchvision.utils as vutils
 
-def sg_fk_img_gnrt(model, noise, dir):
+def sg_fk_img_gnrt(model, noise, dir, begin_idx=0):
     # 创建文件夹
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -13,7 +13,7 @@ def sg_fk_img_gnrt(model, noise, dir):
     image_num = fake.shape[0]
 
     for i in range(image_num):
-        image_path = os.path.join(dir, '{}.png'.format(i + 1))
+        image_path = os.path.join(dir, '{}.png'.format(begin_idx + i + 1))
         sgimage = fake[i, :, :, :]
         vutils.save_image(sgimage, image_path)
 

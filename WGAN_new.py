@@ -139,11 +139,12 @@ def generator_train(netG, noise, optimizerG, opt):
 if __name__ == '__main__':
     opt = argsget()
     # 当前时间
-    now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
-    root = os.path.join(opt.experiment, opt.class_name, now)
+    # now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+    # root = os.path.join(opt.experiment, opt.class_name, now)
+    root = os.path.join(opt.experiment, opt.class_name)
     # 图片存储文件夹
-    image_generate_dir = os.path.join(root, 'image_generate')
-    mkdir(image_generate_dir)
+    # image_generate_dir = os.path.join(root, 'image_generate')
+    # mkdir(image_generate_dir)
     record_dir = os.path.join(root, 'record')
     mkdir(record_dir)
     # 日志文件
@@ -219,6 +220,7 @@ if __name__ == '__main__':
     errD_real, errD_fake, errD, errG = None, None, None, None
 
     for epoch in range(opt.niter):
+        if total_DG >= 81000: break
         data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):
@@ -243,7 +245,7 @@ if __name__ == '__main__':
                 if total_DG % 1000 == 0:
                     toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                 # 保存模型
-                if total_DG % 5000 == 0:
+                if total_DG % 2500 == 0:
                     toolsf.model_save(netG, netD, total_DG, root)
 
             for p in netD.parameters():
@@ -268,6 +270,6 @@ if __name__ == '__main__':
             if total_DG % 1000 == 0:
                 toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
             # 保存模型
-            if total_DG % 5000 == 0:
+            if total_DG % 2500 == 0:
                 toolsf.model_save(netG, netD, total_DG, root)
 

@@ -160,8 +160,9 @@ def generator_train(netG, noise, optimizerG, opt):
 if __name__ == '__main__':
     opt = argsget()
     # 当前时间
-    now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
-    root = os.path.join(opt.experiment, opt.class_name, now)
+    # now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+    # root = os.path.join(opt.experiment, opt.class_name, now)
+    root = os.path.join(opt.experiment, opt.class_name)
     # 图片存储文件夹
     # image_generate_dir = os.path.join(root, 'image_generate')
     # mkdir(image_generate_dir)
@@ -246,6 +247,7 @@ if __name__ == '__main__':
     for epoch in range(opt.niter):
         data_iter = iter(dataloader)
         i = 0
+        if total_DG >= 81000: break
         while i < len(dataloader):
             # gen iterations为generator训练的轮次
             # gen_iterations < 2时按照WGAN的训练方式进行训练
@@ -310,7 +312,7 @@ if __name__ == '__main__':
                     if total_DG % 1000 == 0:
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     # 保存模型
-                    if total_DG % 5000 == 0:
+                    if total_DG % 2500 == 0:
                         toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: discriminator train')
                 # 否则训练generator
@@ -326,7 +328,7 @@ if __name__ == '__main__':
                     if total_DG % 1000 == 0:
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     # 保存模型
-                    if total_DG % 5000 == 0:
+                    if total_DG % 2500 == 0:
                         toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: generator train')
                 # 写日志
