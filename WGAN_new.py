@@ -220,7 +220,7 @@ if __name__ == '__main__':
     errD_real, errD_fake, errD, errG = None, None, None, None
 
     for epoch in range(opt.niter):
-        if total_DG >= 1000: break
+        if total_DG >= 81000: break
         data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):
@@ -242,10 +242,10 @@ if __name__ == '__main__':
                 # 训练discriminator
                 errD_real, errD_fake, errD = discriminator_train(netD, data, noise, optimizerD, opt)
                 # 生成图片
-                if total_DG % 200 == 0:
+                if total_DG % 1000 == 0:
                     toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                 # 保存模型
-                if total_DG % 200 == 0:
+                if total_DG % 2500 == 0:
                     toolsf.model_save(netG, netD, total_DG, root)
 
             for p in netD.parameters():
@@ -267,9 +267,9 @@ if __name__ == '__main__':
             gen_iterations += 1
 
             # 生成图片
-            if total_DG % 200 == 0:
+            if total_DG % 1000 == 0:
                 toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
             # 保存模型
-            if total_DG % 200 == 0:
+            if total_DG % 2500 == 0:
                 toolsf.model_save(netG, netD, total_DG, root)
 
