@@ -8,7 +8,7 @@ def argsget():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', default="other", help='cifar10 | lsun | imagenet | folder | lfw ')
     parser.add_argument('--dataroot', default="/home/lenovo/dataset/medical/processed_dataset/gen", help='path to dataset')
-    parser.add_argument('--batchSize', type=int, default=64, help='input batch size')
+    parser.add_argument('--batchSize', type=int, default=32, help='input batch size')
     parser.add_argument('--img_size', type=int, default=64, help='the height / width of the input image to network')
     parser.add_argument('--T1', type=float, default=0.3)
     parser.add_argument('--T2', type=float, default=0.5)

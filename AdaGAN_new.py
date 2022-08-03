@@ -247,7 +247,7 @@ if __name__ == '__main__':
     for epoch in range(opt.niter):
         data_iter = iter(dataloader)
         i = 0
-        if total_DG >= 2500: break
+        if total_DG >= 1000: break
         while i < len(dataloader):
             # gen iterations为generator训练的轮次
             # gen_iterations < 2时按照WGAN的训练方式进行训练
@@ -309,10 +309,10 @@ if __name__ == '__main__':
                     errD_real, errD_fake, errD = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
                                                  round(errD.cpu().item(), 2)
                     # 生成图片
-                    if total_DG % 1000 == 0:
+                    if total_DG % 200 == 0:
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     # 保存模型
-                    if total_DG % 2500 == 0:
+                    if total_DG % 200 == 0:
                         toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: discriminator train')
                 # 否则训练generator
@@ -325,10 +325,10 @@ if __name__ == '__main__':
                     errG = round(errG.cpu().item(), 2)
                     gen_iterations += 1
                     # 生成图片
-                    if total_DG % 1000 == 0:
+                    if total_DG % 200 == 0:
                         toolsf.timage_gnrt(netG, data, fixed_noise, root, total_DG)
                     # 保存模型
-                    if total_DG % 2500 == 0:
+                    if total_DG % 200 == 0:
                         toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: generator train')
                 # 写日志
