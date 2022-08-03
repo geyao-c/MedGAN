@@ -220,7 +220,7 @@ if __name__ == '__main__':
     errD_real, errD_fake, errD, errG = None, None, None, None
 
     for epoch in range(opt.niter):
-        if total_DG >= 81000: break
+        if total_DG >= 2500: break
         data_iter = iter(dataloader)
         i = 0
         while i < len(dataloader):

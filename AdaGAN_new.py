@@ -247,7 +247,7 @@ if __name__ == '__main__':
     for epoch in range(opt.niter):
         data_iter = iter(dataloader)
         i = 0
-        if total_DG >= 81000: break
+        if total_DG >= 2500: break
         while i < len(dataloader):
             # gen iterations为generator训练的轮次
             # gen_iterations < 2时按照WGAN的训练方式进行训练
