@@ -51,7 +51,13 @@ def timage_gnrt(model, real_data, noise, root, iter):
     bc_fk_img_gnrt(model, noise, bc_fk_dir, iter)
 
 def model_save(netG, netD, iter, dir):
-    G_save_path = os.path.join(dir, 'saved_model', 'netG_iter{}'.format(iter))
-    D_save_path = os.path.join(dir, 'saved_model', 'netD_iter{}'.format(iter))
+    model_save_dir = os.path.join(dir, 'save_model')
+
+    # 创建文件夹
+    if not os.path.exists(model_save_dir):
+        os.makedirs(model_save_dir)
+
+    G_save_path = os.path.join(model_save_dir, 'netG_iter{}.pth'.format(iter))
+    D_save_path = os.path.join(model_save_dir, 'netD_iter{}.pth'.format(iter))
     torch.save(netG.state_dict(), G_save_path)
     torch.save(netD.state_dict(), D_save_path)
