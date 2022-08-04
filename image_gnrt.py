@@ -43,7 +43,8 @@ if __name__ == '__main__':
     # 加载模型
     if opt.netG_path is None:
         raise('netG path is None')
-    netG.load_state_dict(torch.load(opt.netG_path, map_location=torch.device('cpu')))
+    map_str = 'cuda' if torch.cuda.is_available() else 'cpu'
+    netG.load_state_dict(torch.load(opt.netG_path, map_location=torch.device(map_str)))
     netG.to(device)
 
     if opt.img_saved_dir is None:
