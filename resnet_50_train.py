@@ -24,6 +24,8 @@ def argsget():
     parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--logpath', type=str, default=None)
     parser.add_argument('--weight_decay', type=float, default=0.0005)
+    parser.add_argument('--optimizer_type', type=str, default='SGD')
+
 
     opt = parser.parse_args()
     return opt
@@ -112,14 +114,19 @@ if __name__ == '__main__':
     valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True)
 
     # 构造模型
-    resnet50 = models.resnet18(pretrained=False, num_classes=num_classes)
-    resnet50.to(device)
+    model = models.resnet18(pretrained=False, num_classes=num_classes)
+    model.to(device)
 
     # 构造损失函数和优化器
     loss_func = nn.CrossEntropyLoss().to(device)
 
-    optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum, weight_decay=opt.weight_decay)
-    logger.info(resnet50)
+    # 定义优化器
+    if opt.optimizer == 'SGD':
+        optimizer = torch.optim.SGD(model.parameters(), lr=opt.lr, momentum=opt.momentum, weight_decay=opt.weight_decay)
+    elif opt.optimizer_type == 'Adam':
+        optimizer = optim.Adam(model.parameters(), lr=opt.lr)  # Adam梯度下降
+
+    logger.info(model)
     # print(resnet50)
 
     start_epoch = 0
@@ -132,15 +139,16 @@ if __name__ == '__main__':
     lr = opt.lr
     while epoch < opt.epochs:
         print('--------------------------------------------------------------------------------')
-        # 学习率在0.5和0.75的时候乘以0.1
-        if epoch in [int(opt.epochs * 0.5), int(opt.epochs * 0.75)]:
-            for param_group in optimizer.param_groups:
-                param_group['lr'] *= 0.1
-                lr = param_group['lr']
+        if opt.optimizer == 'SGD':
+            # 学习率在0.5和0.75的时候乘以0.1
+            if epoch in [int(opt.epochs * 0.5), int(opt.epochs * 0.75)]:
+                for param_group in optimizer.param_groups:
+                    param_group['lr'] *= 0.1
+                    lr = param_group['lr']
         logger.info('lr is: {}'.format(lr))
         start = time.time()
-        train_obj, train_top1_acc = train(resnet50, loss_func, optimizer, train_data)
-        valid_obj, valid_top1_acc = valid(resnet50, loss_func, valid_data)
+        train_obj, train_top1_acc = train(model, loss_func, optimizer, train_data)
+        valid_obj, valid_top1_acc = valid(model, loss_func, valid_data)
         # logstore(writer, train_obj, train_top1_acc, valid_obj, valid_top1_acc, epoch)
 
         if valid_top1_acc > best_top1_acc:
