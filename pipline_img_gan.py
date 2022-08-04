@@ -16,7 +16,7 @@ if __name__ == '__main__':
     WGAN_gimg_root = os.path.join(gimg_root, 'WGAN')
 
     netG_root = '/home/lenovo/code/AdaGAN/result/2022-08-04-00:50:07'
-    AnetG_root = os.path.join(netG_root, 'AdaGAN')
+    AnetG_root = os.path.join(netG_root, 'AdaGan')
     WnetG_root = os.path.join(netG_root, 'WGAN')
     siter, delta, liter = 2500, 2500, 50000
 
