@@ -2,6 +2,7 @@ from util import toolsf
 import datetime
 import os
 import argparse
+import time
 
 """
 python image_gnrt.py --netG_path ./model/netG_iter50000.pth --gnrt_num 1000 --img_saved_dir ./result/image
@@ -18,13 +19,14 @@ if __name__ == '__main__':
     netG_root = '/home/lenovo/code/AdaGan/result/2022-08-04-00:50:07'
     AnetG_root = os.path.join(netG_root, 'AdaGan')
     WnetG_root = os.path.join(netG_root, 'WGAN')
-    siter, delta, liter = 20000, 5000, 80000
+    siter, delta, liter = 5000, 5000, 80000
 
     class_name_list = ["blister", "hydatoncus", "Demodicosis", "parakeratosis", "papillomatosis", "molluscum"]
     gnrt_num = 1000
 
     cmd_list = []
     while siter <= liter:
+        start = time.time()
         for class_name in class_name_list:
             AnetG_path = os.path.join(AnetG_root, class_name, 'save_model', 'netG_iter{}.pth'.format(siter))
             WnetG_path = os.path.join(WnetG_root, class_name, 'save_model', 'netG_iter{}.pth'.format(siter))
@@ -40,9 +42,10 @@ if __name__ == '__main__':
             )
             cmd_list.append(AdaGAN_gnrt_cmd)
             cmd_list.append(WGAN_gnrt_cmd)
+        end = time.time()
         toolsf.execute_command(cmd_list)
         cmd_list = []
-        print('siter{}图片已生成完毕'.format(siter))
+        print('siter{}图片已生成完毕, 耗时{:.2f}'.format(siter, end - start))
         siter += delta
 
 
