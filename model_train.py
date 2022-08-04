@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from util import toolsf
+import models
 import time
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -114,7 +115,7 @@ if __name__ == '__main__':
     valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True, num_workers=8)
 
     # 构造模型
-    model = models.resnet18(pretrained=False, num_classes=num_classes)
+    model = models.resnet.resnet18(pretrained=False, num_classes=num_classes)
     model.to(device)
 
     # 构造损失函数和优化器

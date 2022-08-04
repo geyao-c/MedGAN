@@ -133,10 +133,12 @@ python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/proc
 python resnet_50_train.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis 
 
 # ubuntu服务器
-python model_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type SGD --lr 0.1
+python model_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type SGD --lr 0.1 --epochs 120
 
 python resnet_50_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type Adam --lr 0.0001
 
-python resnet_50_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/AdaGAN/50000 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type Adam --lr 0.0001
+python model.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/AdaGAN/50000 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type Adam --lr 0.0001
+    
+python model.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/AdaGAN/50000 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type SGD --lr 0.1
 ```
 
