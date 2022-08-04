@@ -86,17 +86,17 @@ if __name__ == '__main__':
 
     image_transforms = {
         'train': transforms.Compose([
-            transforms.RandomResizedCrop(size=256, scale=(0.8, 1.0)),
+            transforms.RandomResizedCrop(size=80, scale=(0.8, 1.0)),
             transforms.RandomRotation(degrees=15),
             transforms.RandomHorizontalFlip(),
-            transforms.CenterCrop(size=224),
+            transforms.CenterCrop(size=64),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5],
                                  [0.5, 0.5, 0.5])
         ]),
         'valid': transforms.Compose([
-            transforms.Resize(size=256),
-            transforms.CenterCrop(size=224),
+            transforms.Resize(size=80),
+            transforms.CenterCrop(size=64),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5],
                                  [0.5, 0.5, 0.5])
@@ -110,8 +110,8 @@ if __name__ == '__main__':
     }
     logger.info('train data len: {}, valid data len: {}'.format(len(data['train']), len(data['valid'])))
     # 读取数据
-    train_data = DataLoader(data['train'], batch_size=opt.batch_size, shuffle=True)
-    valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True)
+    train_data = DataLoader(data['train'], batch_size=opt.batch_size, shuffle=True, num_workers=8)
+    valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True, num_workers=8)
 
     # 构造模型
     model = models.resnet18(pretrained=False, num_classes=num_classes)
