@@ -40,8 +40,9 @@ if __name__ == '__main__':
             )
             cmd_list.append(AdaGAN_gnrt_cmd)
             cmd_list.append(WGAN_gnrt_cmd)
-            toolsf.execute_command(cmd_list)
-            print('siter{}图片已生成完毕'.format(siter))
+        toolsf.execute_command(cmd_list)
+        cmd_list = []
+        print('siter{}图片已生成完毕'.format(siter))
         siter += delta
 
 
