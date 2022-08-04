@@ -38,16 +38,16 @@ def train(model, loss_function, optimizer, train_data):
         n = inputs.size(0)
 
         # 因为这里梯度是累加的，所以每次记得清零
-        optimizer.zero_grad()
         outputs = model(inputs)
         loss = loss_function(outputs, labels)
-        loss.backward()
-        optimizer.step()
 
         prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 5))
-
         losses.update(loss.item(), n)
         top1.update(prec1.item(), n)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
     return losses.avg, top1.avg
 
@@ -64,6 +64,7 @@ def valid(model, loss_function, valid_data):
 
             outputs = model(inputs)
             loss = loss_function(outputs, labels)
+            print(loss)
 
             prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 5))
 
@@ -115,7 +116,8 @@ if __name__ == '__main__':
     # 构造损失函数和优化器
     loss_func = nn.CrossEntropyLoss().to(device)
     optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum)
-    print(resnet50)
+    logger.info(resnet50)
+    # print(resnet50)
 
     start_epoch = 0
     best_top1_acc = 0
@@ -124,12 +126,15 @@ if __name__ == '__main__':
     epoch = start_epoch
     best_accu_model, valid_top1_acc = None, None
 
+    lr = opt.lr
     while epoch < opt.epochs:
+        print('--------------------------------------------------------------------------------')
         # 学习率在0.5和0.75的时候乘以0.1
         if epoch in [int(opt.epochs * 0.5), int(opt.epochs * 0.75)]:
             for param_group in optimizer.param_groups:
                 param_group['lr'] *= 0.1
-
+                lr = param_group['lr']
+        logger.info(lr)
         start = time.time()
         train_obj, train_top1_acc = train(resnet50, loss_func, optimizer, train_data)
         valid_obj, valid_top1_acc = valid(resnet50, loss_func, valid_data)
@@ -140,7 +145,6 @@ if __name__ == '__main__':
 
         epoch += 1
         end = time.time()
-        print('--------------------------------------------------------------------------------')
         print("train loss is: {:.3f}, train accuracy is {:.3f}".format(train_obj, train_top1_acc))
         print("valid loss is: {:.3f}, valid accuracy is {:.3f}".format(valid_obj, valid_top1_acc))
         print("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}".format(epoch, opt.epochs, best_top1_acc, (end - start)))
