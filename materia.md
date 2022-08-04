@@ -133,6 +133,6 @@ python WGAN_new.py --dataset others --dataroot /home/lenovo/dataset/medical/proc
 python resnet_50_train.py --dataset others --dataroot /Users/chenjie/dataset/医疗数据集/processed_dataset/gen --batchSize 16 --img_size 64 --class_name papillomatosis 
 
 # ubuntu服务器
-python resnet_50_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid
+python resnet_50_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpth ./result/resnet_50_train/test
 ```
 

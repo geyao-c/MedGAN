@@ -4,6 +4,7 @@ import torchvision.utils as vutils
 import time
 import datetime
 import subprocess
+import logging
 
 def sg_fk_img_gnrt(model, noise, dir, begin_idx=0):
     # 创建文件夹
@@ -141,3 +142,25 @@ def accuracy(output, target, topk=(1,)):
             correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size))
         return res
+
+def get_logger(file_path):
+
+    logger = logging.getLogger('gal')
+    log_format = '%(asctime)s | %(message)s'
+    formatter = logging.Formatter(log_format, datefmt='%m/%d %I:%M:%S %p')
+    file_handler = logging.FileHandler(file_path)
+    file_handler.setFormatter(formatter)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+    logger.setLevel(logging.INFO)
+
+    return logger
+
+# 构建logger和writer
+def lgwt_construct(logpath):
+    # 建立日志
+    logger = get_logger(logpath)  # 运行时日志文件
+    return logger

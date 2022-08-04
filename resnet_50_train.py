@@ -22,6 +22,7 @@ def argsget():
     parser.add_argument('--lr', type=float, default=0.1)
     parser.add_argument('--epochs', type=int, default=160)
     parser.add_argument('--momentum', type=float, default=0.9)
+    parser.add_argument('--logpath', type=str, default=None)
     opt = parser.parse_args()
     return opt
 
@@ -73,6 +74,10 @@ def valid(model, loss_function, valid_data):
 
 if __name__ == '__main__':
     opt = argsget()
+    if opt.logpath is None:
+        raise ('logpath is None')
+    logger = toolsf.get_logger(opt.logpath)
+    logger.info('args is %s', opt)
 
     image_transforms = {
         'train': transforms.Compose([
@@ -98,7 +103,7 @@ if __name__ == '__main__':
         'train': datasets.ImageFolder(root=opt.train_directory, transform=image_transforms['train']),
         'valid': datasets.ImageFolder(root=opt.valid_directory, transform=image_transforms['valid'])
     }
-    print('train data len: {}, valid data len: {}'.format(len(data['train']), len(data['valid'])))
+    logger.info('train data len: {}, valid data len: {}'.format(len(data['train']), len(data['valid'])))
     # 读取数据
     train_data = DataLoader(data['train'], batch_size=opt.batch_size, shuffle=True)
     valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True)
