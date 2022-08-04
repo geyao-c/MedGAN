@@ -23,6 +23,8 @@ def argsget():
     parser.add_argument('--epochs', type=int, default=160)
     parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--logpath', type=str, default=None)
+    parser.add_argument('--weight_decay', type=float, default=0.0005)
+
     opt = parser.parse_args()
     return opt
 
@@ -115,7 +117,8 @@ if __name__ == '__main__':
 
     # 构造损失函数和优化器
     loss_func = nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum)
+
+    optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum, weight_decay=opt.weight_decay)
     logger.info(resnet50)
     # print(resnet50)
 
