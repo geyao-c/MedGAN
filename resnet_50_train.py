@@ -148,9 +148,9 @@ if __name__ == '__main__':
 
         epoch += 1
         end = time.time()
-        print("train loss is: {:.3f}, train accuracy is {:.3f}".format(train_obj, train_top1_acc))
-        print("valid loss is: {:.3f}, valid accuracy is {:.3f}".format(valid_obj, valid_top1_acc))
-        print("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}".format(epoch, opt.epochs, best_top1_acc, (end - start)))
+        logger.info("train loss is: {:.3f}, train accuracy is {:.3f}".format(train_obj, train_top1_acc))
+        logger.info("valid loss is: {:.3f}, valid accuracy is {:.3f}".format(valid_obj, valid_top1_acc))
+        logger.info("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}".format(epoch, opt.epochs, best_top1_acc, (end - start)))
 
 
 
