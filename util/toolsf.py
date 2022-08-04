@@ -92,7 +92,7 @@ def execute_command(cmdstring_list, cwd=None, timeout=None, shell=True):
     # 没有指定标准输出和错误输出的管道，因此会打印到屏幕上；
     for i, item in enumerate(cmdstring_list):
         sub = subprocess.Popen(item, cwd=cwd, stdin=subprocess.PIPE, shell=shell, bufsize=4096)
-        time.sleep(5)
+        time.sleep(0.5)
         sub_list.append(sub)
 
     # subprocess.poll()方法：检查子进程是否结束了，如果结束了，设定并返回码，放在subprocess.returncode变量中
