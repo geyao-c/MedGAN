@@ -18,9 +18,9 @@ def argsget():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_directory', type=str, default="/Users/chenjie/dataset/医疗数据集/processed_dataset/gen")
     parser.add_argument('--valid_directory', type=str, default="/Users/chenjie/dataset/医疗数据集/processed_dataset/valid")
-    parser.add_argument('--batch_size', type=int, default=64)
+    parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--epochs', type=int, default=120)
+    parser.add_argument('--epochs', type=int, default=160)
     parser.add_argument('--momentum', type=float, default=0.9)
     opt = parser.parse_args()
     return opt
@@ -97,6 +97,7 @@ if __name__ == '__main__':
         'train': datasets.ImageFolder(root=opt.train_directory, transform=image_transforms['train']),
         'valid': datasets.ImageFolder(root=opt.valid_directory, transform=image_transforms['valid'])
     }
+    print('train data len: {}, valid data len: {}'.format(len(data['train']), len(data['valid'])))
     # 读取数据
     train_data = DataLoader(data['train'], batch_size=opt.batch_size, shuffle=True)
     valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True)
