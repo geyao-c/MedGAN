@@ -23,7 +23,7 @@ def argsget():
     parser.add_argument('--epochs', type=int, default=160)
     parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--logpath', type=str, default=None)
-    parser.add_argument('--weight_decay', type=float, default=0.0005)
+    parser.add_argument('--weight_decay', type=float, default=0.001)
     parser.add_argument('--optimizer_type', type=str, default='SGD')
 
 
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     loss_func = nn.CrossEntropyLoss().to(device)
 
     # 定义优化器
-    if opt.optimizer == 'SGD':
+    if opt.optimizer_type == 'SGD':
         optimizer = torch.optim.SGD(model.parameters(), lr=opt.lr, momentum=opt.momentum, weight_decay=opt.weight_decay)
     elif opt.optimizer_type == 'Adam':
         optimizer = optim.Adam(model.parameters(), lr=opt.lr)  # Adam梯度下降
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     lr = opt.lr
     while epoch < opt.epochs:
         print('--------------------------------------------------------------------------------')
-        if opt.optimizer == 'SGD':
+        if opt.optimizer_type == 'SGD':
             # 学习率在0.5和0.75的时候乘以0.1
             if epoch in [int(opt.epochs * 0.5), int(opt.epochs * 0.75)]:
                 for param_group in optimizer.param_groups:
