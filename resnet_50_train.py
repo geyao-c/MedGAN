@@ -59,7 +59,7 @@ def valid(model, loss_function, valid_data):
             inputs = inputs.to(device)
             labels = labels.to(device)
             n = inputs.size(0)
-            print(labels)
+            # print(labels)
 
             outputs = model(inputs)
             loss = loss_function(outputs, labels)
