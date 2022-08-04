@@ -18,7 +18,7 @@ if __name__ == '__main__':
     netG_root = '/home/lenovo/code/AdaGan/result/2022-08-04-00:50:07'
     AnetG_root = os.path.join(netG_root, 'AdaGan')
     WnetG_root = os.path.join(netG_root, 'WGAN')
-    siter, delta, liter = 2500, 2500, 50000
+    siter, delta, liter = 20000, 5000, 80000
 
     class_name_list = ["blister", "hydatoncus", "Demodicosis", "parakeratosis", "papillomatosis", "molluscum"]
     gnrt_num = 1000
