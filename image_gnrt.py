@@ -6,8 +6,8 @@ import models.dcgan as dcgan
 import models.mlp as mlp
 from util import toolsf
 
-# device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-device = torch.device('cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cpu')
 """
 python imge_gnrt.py --netG_path ./model/netG_iter50000.pth --gnrt_num 1000 --img_saved_dir ./result/image
 """
@@ -43,8 +43,8 @@ if __name__ == '__main__':
     # 加载模型
     if opt.netG_path is None:
         raise('netG path is None')
-    # map_str = 'cuda' if torch.cuda.is_available() else 'cpu'
-    map_str = 'cpu'
+    map_str = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # map_str = 'cpu'
     netG.load_state_dict(torch.load(opt.netG_path, map_location=torch.device(map_str)))
     netG.to(device)
 
