@@ -112,7 +112,7 @@ if __name__ == '__main__':
     valid_data = DataLoader(data['valid'], batch_size=opt.batch_size, shuffle=True)
 
     # 构造模型
-    resnet50 = models.resnet50(pretrained=False, num_classes=num_classes)
+    resnet50 = models.resnet18(pretrained=False, num_classes=num_classes)
     resnet50.to(device)
 
     # 构造损失函数和优化器
@@ -137,7 +137,7 @@ if __name__ == '__main__':
             for param_group in optimizer.param_groups:
                 param_group['lr'] *= 0.1
                 lr = param_group['lr']
-        logger.info(lr)
+        logger.info('lr is: {}'.format(lr))
         start = time.time()
         train_obj, train_top1_acc = train(resnet50, loss_func, optimizer, train_data)
         valid_obj, valid_top1_acc = valid(resnet50, loss_func, valid_data)
