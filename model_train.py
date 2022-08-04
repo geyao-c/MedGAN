@@ -86,15 +86,26 @@ if __name__ == '__main__':
     logger.info('args is %s', opt)
 
     image_transforms = {
+        # 'train': transforms.Compose([
+        #     transforms.RandomCrop(64, padding=8),
+        #     # transforms.RandomResizedCrop(size=80, scale=(0.8, 1.0)),
+        #     transforms.RandomRotation(degrees=15),
+        #     transforms.RandomHorizontalFlip(),
+        #     # transforms.CenterCrop(size=64),
+        #     transforms.ToTensor(),
+        #     transforms.Normalize([0.5, 0.5, 0.5],
+        #                          [0.5, 0.5, 0.5])
+        # ]),
         'train': transforms.Compose([
-            transforms.RandomCrop(64, padding=8),
-            # transforms.RandomResizedCrop(size=80, scale=(0.8, 1.0)),
-            transforms.RandomRotation(degrees=15),
-            transforms.RandomHorizontalFlip(),
-            # transforms.CenterCrop(size=64),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5],
-                                 [0.5, 0.5, 0.5])
+        transforms.RandomResizedCrop(size=64, scale=(0.2, 1.)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomApply([
+            transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)
+        ], p=0.8),
+        transforms.RandomGrayscale(p=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5],
+                             [0.5, 0.5, 0.5])
         ]),
         'valid': transforms.Compose([
             transforms.Resize(size=64),
