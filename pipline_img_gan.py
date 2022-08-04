@@ -4,7 +4,7 @@ import os
 import argparse
 
 """
-python imge_gnrt.py --netG_path ./model/netG_iter50000.pth --gnrt_num 1000 --img_saved_dir ./result/image
+python image_gnrt.py --netG_path ./model/netG_iter50000.pth --gnrt_num 1000 --img_saved_dir ./result/image
 """
 
 if __name__ == '__main__':
@@ -32,10 +32,10 @@ if __name__ == '__main__':
             AdaGAN_gimg_dir = os.path.join(AdaGAN_gimg_root, str(siter), class_name)
             WGAN_gimg_dir = os.path.join(WGAN_gimg_root, str(siter), class_name)
 
-            AdaGAN_gnrt_cmd = "python imge_gnrt.py --netG_path {} --gnrt_num {} --img_saved_dir {}".format(
+            AdaGAN_gnrt_cmd = "python image_gnrt.py --netG_path {} --gnrt_num {} --img_saved_dir {}".format(
                 AnetG_path, gnrt_num, AdaGAN_gimg_dir
             )
-            WGAN_gnrt_cmd = "python imge_gnrt.py --netG_path {} --gnrt_num {} --img_saved_dir {}".format(
+            WGAN_gnrt_cmd = "python image_gnrt.py --netG_path {} --gnrt_num {} --img_saved_dir {}".format(
                 WnetG_path, gnrt_num, WGAN_gimg_dir
             )
             cmd_list.append(AdaGAN_gnrt_cmd)
