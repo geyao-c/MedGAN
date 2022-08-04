@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from util import toolsf
+import time
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -131,10 +132,11 @@ if __name__ == '__main__':
 
         epoch += 1
         end = time.time()
+        print('--------------------------------------------------------------------------------')
         print("train loss is: {:.3f}, train accuracy is {:.3f}".format(train_obj, train_top1_acc))
         print("valid loss is: {:.3f}, valid accuracy is {:.3f}".format(valid_obj, valid_top1_acc))
-        print("=>Best accuracy {:.3f} cost time is {:.3f}".format(best_top1_acc, (end - start)))
-
+        print("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}"
+              .formate(epoch, opt.epoch, best_top1_acc, (end - start)))
 
 
 
