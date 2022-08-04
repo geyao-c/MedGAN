@@ -12,6 +12,7 @@ from util import toolsf
 import time
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(device)
 
 def argsget():
     parser = argparse.ArgumentParser()
@@ -106,7 +107,7 @@ if __name__ == '__main__':
 
     # 构造损失函数和优化器
     loss_func = nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum).to(device)
+    optimizer = torch.optim.SGD(resnet50.parameters(), lr=opt.lr, momentum=opt.momentum)
     print(resnet50)
 
     start_epoch = 0
