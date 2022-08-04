@@ -135,8 +135,7 @@ if __name__ == '__main__':
         print('--------------------------------------------------------------------------------')
         print("train loss is: {:.3f}, train accuracy is {:.3f}".format(train_obj, train_top1_acc))
         print("valid loss is: {:.3f}, valid accuracy is {:.3f}".format(valid_obj, valid_top1_acc))
-        print("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}"
-              .formate(epoch, opt.epoch, best_top1_acc, (end - start)))
+        print("=>epoch:{}/{}, Best accuracy {:.3f} cost time is {:.3f}".format(epoch, opt.epoch, best_top1_acc, (end - start)))
 
 
 
