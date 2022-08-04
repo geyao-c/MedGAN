@@ -87,17 +87,18 @@ if __name__ == '__main__':
 
     image_transforms = {
         'train': transforms.Compose([
-            transforms.RandomResizedCrop(size=80, scale=(0.8, 1.0)),
+            transforms.RandomCrop(64, padding=8),
+            # transforms.RandomResizedCrop(size=80, scale=(0.8, 1.0)),
             transforms.RandomRotation(degrees=15),
             transforms.RandomHorizontalFlip(),
-            transforms.CenterCrop(size=64),
+            # transforms.CenterCrop(size=64),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5],
                                  [0.5, 0.5, 0.5])
         ]),
         'valid': transforms.Compose([
-            transforms.Resize(size=80),
-            transforms.CenterCrop(size=64),
+            transforms.Resize(size=64),
+            # transforms.CenterCrop(size=64),
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5],
                                  [0.5, 0.5, 0.5])
