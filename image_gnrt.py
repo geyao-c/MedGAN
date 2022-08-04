@@ -6,7 +6,7 @@ import models.dcgan as dcgan
 import models.mlp as mlp
 from util import toolsf
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 """
 python imge_gnrt.py --netG_path ./model/netG_iter50000.pth --gnrt_num 1000 --img_saved_dir ./result/image
