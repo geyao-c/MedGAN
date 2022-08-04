@@ -42,8 +42,8 @@ if __name__ == '__main__':
             )
             cmd_list.append(AdaGAN_gnrt_cmd)
             cmd_list.append(WGAN_gnrt_cmd)
-        end = time.time()
         toolsf.execute_command(cmd_list)
+        end = time.time()
         cmd_list = []
         print('siter{}图片已生成完毕, 耗时{:.2f}'.format(siter, end - start))
         siter += delta
