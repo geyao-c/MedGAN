@@ -144,3 +144,23 @@ python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_i
 python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/WGAN/50000 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type SGD --lr 0.1
 ```
 
+
+
+### 四、训练resnet18
+
+```python
+# ubuntu服务器
+python model_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid --logpath ./result/resnet_50_train/test/logger.log --optimizer_type SGD --lr 0.1 --epochs 120
+
+# 使用生成的图片进行训练 AdaGan
+python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/AdaGAN/50000-4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1
+    
+python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/AdaGAN/50000-2 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid2 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1
+
+# 使用生成的图片进行训练 WGAN
+python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-04-17:58:18/WGAN/50000-4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1
+
+# 使用原始图片进行训练
+python model_train.py --train_directory /home/lenovo/dataset/medical/processed_dataset/gen4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/valid4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1
+```
+
