@@ -28,7 +28,7 @@ def argsget():
     parser.add_argument('--dataset', default="other", help='cifar10 | lsun | imagenet | folder | lfw ')
     # parser.add_argument('--dataroot', default="samples", help='path to dataset')
     parser.add_argument('--dataroot', default="/Users/chenjie/dataset/医疗数据集/processed_dataset/gen", help='path to dataset')
-    parser.add_argument('--workers', type=int, help='number of data loading workers', default=8)
+    parser.add_argument('--workers', type=int, help='number of data loading workers', default=4)
     parser.add_argument('--batchSize', type=int, default=20, help='input batch size')
     parser.add_argument('--img_size', type=int, default=64, help='the height / width of the input image to network')
     parser.add_argument('--nc', type=int, default=3, help='input image channels')
