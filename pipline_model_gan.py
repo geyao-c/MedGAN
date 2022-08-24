@@ -33,6 +33,6 @@ if __name__ == '__main__':
                                                               class_name, opt.T1, opt.T2, AdaGAN_root)
         cmd_list.append(WGAN_cmd)
         cmd_list.append(AdaGAN_cmd)
-        if len(cmd_list) >= 12:
+        if len(cmd_list) >= 6:
             toolsf.execute_command(cmd_list)
-            cmd = []
+            cmd_list = []
