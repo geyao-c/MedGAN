@@ -18,8 +18,10 @@ def sg_fk_img_gnrt(model, noise, dir, begin_idx=0):
 
     for i in range(image_num):
         image_path = os.path.join(dir, '{}.png'.format(begin_idx + i + 1))
+        # 生成灰度图片
         sgimage = fake[i, :, :, :]
-        print(sgimage.shape)
+        sgimage[1, :, :] = sgimage[0, :, :]
+        sgimage[2, :, :] = sgimage[0, :, :]
         vutils.save_image(sgimage, image_path)
 
 def bc_rl_img_gnrt(real_data, dir, iter):
