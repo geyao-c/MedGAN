@@ -21,7 +21,7 @@ def argsget():
     parser.add_argument('--valid_directory', type=str, default="/Users/chenjie/dataset/医疗数据集/processed_dataset/valid")
     parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--epochs', type=int, default=160)
+    parser.add_argument('--epochs', type=int, default=120)
     parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--logpath', type=str, default=None)
     parser.add_argument('--weight_decay', type=float, default=0.001)
