@@ -26,7 +26,7 @@ def argsget():
     parser.add_argument('--logpath', type=str, default=None)
     parser.add_argument('--weight_decay', type=float, default=0.001)
     parser.add_argument('--optimizer_type', type=str, default='SGD')
-
+    parser.add_argument('--num_classes', type=int, default=2)
 
     opt = parser.parse_args()
     return opt
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         ])
     }
 
-    num_classes = 6
+    num_classes = opt.num_classes
     data = {
         'train': datasets.ImageFolder(root=opt.train_directory, transform=image_transforms['train']),
         'valid': datasets.ImageFolder(root=opt.valid_directory, transform=image_transforms['valid'])
