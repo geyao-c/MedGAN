@@ -19,6 +19,7 @@ def sg_fk_img_gnrt(model, noise, dir, begin_idx=0):
     for i in range(image_num):
         image_path = os.path.join(dir, '{}.png'.format(begin_idx + i + 1))
         sgimage = fake[i, :, :, :]
+        print(sgimage.shape)
         vutils.save_image(sgimage, image_path)
 
 def bc_rl_img_gnrt(real_data, dir, iter):

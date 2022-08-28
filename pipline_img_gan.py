@@ -16,10 +16,10 @@ if __name__ == '__main__':
     AdaGAN_gimg_root = os.path.join(gimg_root, 'AdaGAN')
     WGAN_gimg_root = os.path.join(gimg_root, 'WGAN')
 
-    netG_root = '/home/lenovo/code/AdaGan/result/2022-08-04-00:50:07'
+    netG_root = '/home/lenovo/code/AdaGan/result/2022-08-24-10:41:28'
     AnetG_root = os.path.join(netG_root, 'AdaGan')
     WnetG_root = os.path.join(netG_root, 'WGAN')
-    siter, delta, liter = 5000, 5000, 80000
+    siter, delta, liter = 5000, 5000, 50000
 
     class_name_list = ["blister", "hydatoncus", "Demodicosis", "parakeratosis", "papillomatosis", "molluscum"]
     gnrt_num = 1000
