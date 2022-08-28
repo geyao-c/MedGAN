@@ -46,7 +46,7 @@ def train(model, loss_function, optimizer, train_data):
         outputs = model(inputs)
         loss = loss_function(outputs, labels)
 
-        prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 5))
+        prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 1))
         losses.update(loss.item(), n)
         top1.update(prec1.item(), n)
 
@@ -71,7 +71,7 @@ def valid(model, loss_function, valid_data):
             loss = loss_function(outputs, labels)
             print(loss)
 
-            prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 5))
+            prec1, prec5 = toolsf.accuracy(outputs, labels, topk=(1, 1))
 
             losses.update(loss.item(), n)
             top1.update(prec1.item(), n)
