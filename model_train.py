@@ -85,7 +85,7 @@ if __name__ == '__main__':
     opt = argsget()
     if opt.logpath is None:
         now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
-        logdir = os.path.join('./result/resnet_18_train', opt.gnrt_type, opt.iter, now)
+        logdir = os.path.join('./result/resnet_18_train', opt.gnrt_type, str(opt.iter), now)
         if not os.path.exists(logdir):
             os.makedirs(logdir)
         opt.logpath = os.path.join(logdir, 'logger.log')
