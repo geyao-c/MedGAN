@@ -11,6 +11,7 @@ import os
 from util import toolsf
 from models import resnet
 import time
+import datetime
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print(device)
@@ -26,7 +27,9 @@ def argsget():
     parser.add_argument('--logpath', type=str, default=None)
     parser.add_argument('--weight_decay', type=float, default=0.001)
     parser.add_argument('--optimizer_type', type=str, default='SGD')
-    parser.add_argument('--num_classes', type=int, default=2)
+    parser.add_argument('--num_classes', type=int, default=4)
+    parser.add_argument('--gnrt_type', type=str, default=None)
+    parser.add_argument('--iter', type=int, default=None)
 
     opt = parser.parse_args()
     return opt
@@ -81,7 +84,12 @@ def valid(model, loss_function, valid_data):
 if __name__ == '__main__':
     opt = argsget()
     if opt.logpath is None:
-        raise ('logpath is None')
+        now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+        logdir = os.path.join('./result/resnet_18_train', opt.gnrt_type, opt.iter, now)
+        if not os.path.exists(logdir):
+            os.makedirs(logdir)
+        opt.logpath = os.path.join(logdir, 'logger.log')
+        # raise ('logpath is None')
     logger = toolsf.get_logger(opt.logpath)
     logger.info('args is %s', opt)
 
