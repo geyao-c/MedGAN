@@ -16,14 +16,14 @@ if __name__ == '__main__':
         # 使用AdaGAN生成的图片进行训练
         AdaGAN_gnrt_train = "python model_train.py --train_directory {} --valid_directory {} " \
                             "--gnrt_type {} --iter {} --optimizer_type SGD --lr 0.1 " \
-                            "--epochs 120 --num_classes 4".format(AdaGAN_gnrt_path, valid_path, 'AdaGAN', s)
+                            "--epochs 120 --num_classes 4".format(AdaGAN_gnrt_path, valid_path, 'AdaGAN', str(s))
         cmd_list = [AdaGAN_gnrt_train] * 3
         toolsf.execute_command(cmd_list)
 
         # 使用WGAN生成的图片进行训练
         WGAN_gnrt_train = "python model_train.py --train_directory {} --valid_directory {} " \
                             "--gnrt_type {} --iter {} --optimizer_type SGD --lr 0.1 " \
-                            "--epochs 120 --num_classes 4".format(WGAN_gnrt_path, valid_path, 'WGAN', s)
+                            "--epochs 120 --num_classes 4".format(WGAN_gnrt_path, valid_path, 'WGAN', str(s))
         cmd_list = [WGAN_gnrt_train] * 3
         toolsf.execute_command(cmd_list)
 
