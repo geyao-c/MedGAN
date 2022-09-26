@@ -332,7 +332,13 @@ if __name__ == '__main__':
                         toolsf.model_save(netG, netD, total_DG, root)
                     print('AdaGAN: generator train')
                 # 写日志
+                now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
                 rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
                          format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+                rf.write(now)
+
                 print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                       format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+                print(now)
+
+# 这个代码是正确的

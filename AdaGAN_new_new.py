@@ -56,7 +56,7 @@ def argsget():
 
     parser.add_argument('--version', type=int, default=0)
     parser.add_argument('--class_name', type=str, default='blister')
-    parser.add_argument('--T1', type=float, default=0.25)
+    parser.add_argument('--T1', type=float, default=0.3)
     parser.add_argument('--T2', type=float, default=0.5)
     opt = parser.parse_args()
     return opt
@@ -317,10 +317,14 @@ if __name__ == '__main__':
             print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                   format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
             # 写日志
+
             rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+            rf.write(now)
             print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            print(now)
             gen_iterations += 1
 
             # 生成图片

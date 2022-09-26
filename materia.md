@@ -159,8 +159,9 @@ python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_i
     
 python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-28-15:01:49/AdaGAN/30000-2 --valid_directory /home/lenovo/dataset/medical/processed_dataset/20-valid-2 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1 --epochs 120 --num_classes 2
 
-python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-28-15:01:49/AdaGAN/30000-4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/20-valid-4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1 --epochs 120 --num_classes 4
+python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-29-00:01:24/AdaGAN/25000-4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/20-valid-4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1 --epochs 120 --num_classes 4
 
+python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-28-15:01:49/AdaGAN/25000-4 --valid_directory /home/lenovo/dataset/medical/processed_dataset/20-valid-4 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1 --epochs 120 --num_classes 4
 # 使用生成的图片进行训练 WGAN
 python model_train.py --train_directory /home/lenovo/code/AdaGan/result/gnrted_img/2022-08-28-15:01:49/WGAN/30000-2 --valid_directory /home/lenovo/dataset/medical/processed_dataset/20-valid-2 --logpath ./result/resnet_18_train/logger.log --optimizer_type SGD --lr 0.1 --epochs 120 --num_classes 2
     
