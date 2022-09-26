@@ -260,10 +260,14 @@ if __name__ == '__main__':
             # 写日志
             errD_real, errD_fake, errD, errG = round(errD_real.cpu().item(), 2), round(errD_fake.cpu().item(), 2), \
                                                round(errD.cpu().item(), 2), round(errG.cpu().item(), 2)
+            now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
             rf.write("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}\n".
                      format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            rf.write(now)
+
             print("total_DG: {}, gen_iterations: {}, errD_real: {}, errD_fake: {}, errD: {}, errG: {}".
                   format(total_DG, gen_iterations, errD_real, errD_fake, errD, errG))
+            print(now)
             gen_iterations += 1
 
             # 生成图片
